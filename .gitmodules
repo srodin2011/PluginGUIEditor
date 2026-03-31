@@ -1,0 +1,6 @@
+[submodule "Clipper2"]
+	path = Clipper2
+	url = https://github.com/srodin2011/Clipper2.git
+[submodule "PluginGUI"]
+	path = PluginGUI
+	url = https://github.com/srodin2011/PluginGUI.git
