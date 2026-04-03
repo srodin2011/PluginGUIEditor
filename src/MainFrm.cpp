@@ -496,17 +496,17 @@ void CMainFrame::UpdatePropertyGrid(Control* pCtrl)
 	USES_CONVERSION;
 
 	CMFCPropertyGridCtrl* pGrid = m_wndPropertyBar.GetGrid();
-	if (!pGrid || !pCtrl)
-		return;
-
-	if (pGrid->GetSafeHwnd() == NULL)
-	{
-		// Если зашли сюда — грид еще не создан как окно!
-		return;
-	}
+	if (!pGrid && pGrid->GetSafeHwnd() == NULL) return;
 
 	// 1. Очистить всё
 	pGrid->RemoveAll();
+
+	// Нет выделенного контрола
+	if (pCtrl == nullptr)
+	{
+		pGrid->AdjustLayout();
+		return;
+	}
 
 	// 2. Карта: className → группа‑свойствойств
 	std::unordered_map<std::string, CMFCPropertyGridProperty*> groupMap;
@@ -531,7 +531,7 @@ void CMainFrame::UpdatePropertyGrid(Control* pCtrl)
 		// 5. Создать свойство в PropertyGrid
 		CMFCPropertyGridProperty* pProp = nullptr;
 
-		auto opt_meta = PropertyRegistry::Instance().Get(id);
+		auto opt_meta = PropertyRegistry::Instance().Get(pCtrl, id);
 
 		CString propName = A2T(pPropInfo->m_uiName.c_str());
 
